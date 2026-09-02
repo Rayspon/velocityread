@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500&family=Geist:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-surface: #121414;
+  --color-surface-dim: #121414;
+  --color-surface-bright: #383939;
+  --color-surface-container-lowest: #0d0e0f;
+  --color-surface-container-low: #1b1c1c;
+  --color-surface-container: #1f2020;
+  --color-surface-container-high: #292a2a;
+  --color-surface-container-highest: #343535;
+  --color-on-surface: #e3e2e2;
+  --color-on-surface-variant: #c4c7c7;
+  --color-inverse-surface: #e3e2e2;
+  --color-inverse-on-surface: #303031;
+  
+  --color-outline: #8e9192;
+  --color-outline-variant: #444748;
+  --color-surface-tint: #c8c6c5;
+  --color-primary: #c8c6c5;
+  --color-on-primary: #313030;
+  --color-primary-container: #1a1a1a;
+  --color-on-primary-container: #848282;
+  
+  --color-secondary: #c6c6c7;
+  --color-on-secondary: #2f3131;
+  --color-secondary-container: #454747;
+  --color-on-secondary-container: #b4b5b5;
+  
+  --color-tertiary: #b3c5ff;
+  --color-on-tertiary: #002b75;
+  --color-tertiary-container: #001645;
+  --color-on-tertiary-container: #417bff;
+
+  --color-error: #ffb4ab;
+  --color-on-error: #690005;
+
+  --color-primary-fixed: #e5e2e1;
+  --color-primary-fixed-dim: #c8c6c5;
+  --color-on-primary-fixed: #1c1b1b;
+  
+  --color-secondary-fixed: #e2e2e2;
+  --color-secondary-fixed-dim: #c6c6c7;
+  --color-on-secondary-fixed: #1a1c1c;
+
+  --color-tertiary-fixed: #dae1ff;
+  --color-tertiary-fixed-dim: #b3c5ff;
+  --color-on-tertiary-fixed: #001849;
+
+  --color-background: #121414;
+  --color-on-background: #e3e2e2;
+  --color-surface-variant: #343535;
+  
+  --font-reading-display: 'Be Vietnam Pro', sans-serif;
+  --font-headline-lg: 'Geist', sans-serif;
+  --font-headline-md: 'Geist', sans-serif;
+  --font-body-lg: 'Geist', sans-serif;
+  --font-body-md: 'Geist', sans-serif;
+  --font-label-sm: 'Geist', sans-serif;
+  
+  --spacing-unit: 8px;
+  --spacing-container-max: 1200px;
+  --spacing-reading-zone-y: 120px;
+  --spacing-gutter: 24px;
+  --spacing-margin-mobile: 16px;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
+    font-family: var(--font-body-md);
+  }
+}
+

@@ -1,0 +1,6 @@
+{
+  "name": "Velocity Reader",
+  "description": "Speed-reading application utilizing Rapid Serial Visual Presentation (RSVP).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
