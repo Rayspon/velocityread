@@ -31,7 +31,7 @@ export function InputView({ setView, onAddText }: InputViewProps) {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to extract text. Make sure you set GEMINI_API_KEY.');
+        throw new Error('Failed to extract text. Make sure you set OPEN_ROUTER_API_KEY.');
       }
 
       const data = await response.json();
