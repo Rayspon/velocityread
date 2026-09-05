@@ -21,17 +21,44 @@ export function InputView({ setView, onAddText }: InputViewProps) {
     setIsExtracting(true);
     setError(null);
 
-    const formData = new FormData();
-    formData.append('image', file);
-
     try {
+      // Convert file to base64 in the browser
+      const reader = new FileReader();
+      const base64Promise = new Promise<{ base64Data: string; mimeType: string }>((resolve, reject) => {
+        reader.onload = (e) => {
+          const result = e.target?.result as string;
+          if (result) {
+            // result is like "data:image/jpeg;base64,/9j/4AAQSkZJ..."
+            const base64Data = result.split(',')[1];
+            resolve({ base64Data, mimeType: file.type });
+          } else {
+            reject(new Error('Failed to read file'));
+          }
+        };
+        reader.onerror = () => reject(new Error('Failed to read file'));
+      });
+      reader.readAsDataURL(file);
+
+      const { base64Data, mimeType } = await base64Promise;
+
       const response = await fetch('/api/ocr', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ image: base64Data, mimeType }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to extract text. Make sure you set OPEN_ROUTER_API_KEY.');
+        let errorMsg = `Server error: ${response.status}`;
+        try {
+          const errData = await response.json();
+          errorMsg = errData.error || errorMsg;
+        } catch {
+          const errText = await response.text();
+          errorMsg = errText || errorMsg;
+        }
+        throw new Error(errorMsg);
       }
 
       const data = await response.json();
