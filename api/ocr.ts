@@ -22,7 +22,7 @@ app.post('/api/ocr', async (req, res) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        "model": "meta-llama/llama-3.2-11b-vision-instruct:free",
+        "model": "meta-llama/llama-3.2-11b-vision-instruct",
         "messages": [
           {
             "role": "user",
