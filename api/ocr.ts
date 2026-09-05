@@ -22,7 +22,7 @@ app.post('/api/ocr', async (req, res) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        "model": "meta-llama/llama-3.2-11b-vision-instruct",
+        "model": "google/gemini-2.5-flash:free",
         "messages": [
           {
             "role": "user",
