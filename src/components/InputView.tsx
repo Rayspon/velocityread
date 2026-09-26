@@ -138,7 +138,7 @@ export function InputView({ setView, onAddText }: InputViewProps) {
         </div>
 
         {error && (
-          <div className="p-4 bg-error-container text-on-error-container rounded-lg text-sm">
+          <div className="p-4 bg-error-container text-on-error-container rounded-lg text-sm whitespace-pre-wrap leading-relaxed">
             {error}
           </div>
         )}
