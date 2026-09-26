@@ -12,13 +12,12 @@ import { DiscoverView } from './components/DiscoverView';
 import { AccountView } from './components/AccountView';
 import { ViewState, TextItem, UserStats, UserAccount } from './types';
 import { getCurrentAccount, syncAccountData } from './lib/accountStore';
-import { CLASSIC_LIBRARY_ITEMS } from './lib/classicBooks';
 
 const defaultStats: UserStats = {
-  totalReadTimeMs: 420000, // 7m of classic reading
-  averageWpm: 480,
-  totalWordsRead: 3360,
-  sessions: 5
+  totalReadTimeMs: 0,
+  averageWpm: 0,
+  totalWordsRead: 0,
+  sessions: 0
 };
 
 export default function App() {
@@ -59,7 +58,7 @@ export default function App() {
     const acc = getCurrentAccount();
     if (acc) {
       setCurrentAccount(acc);
-      const userLib = acc.library && acc.library.length > 0 ? acc.library : CLASSIC_LIBRARY_ITEMS;
+      const userLib = Array.isArray(acc.library) ? acc.library : [];
       const sanitized = userLib.map(item => ({
         ...item,
         progress: roundProgress(item.progress)
@@ -74,36 +73,54 @@ export default function App() {
       if (savedLib) {
         try {
           const parsed = JSON.parse(savedLib);
-          const libArray = Array.isArray(parsed) && parsed.length > 0 ? parsed : CLASSIC_LIBRARY_ITEMS;
-          const sanitized = libArray.map(item => ({
-            ...item,
-            progress: roundProgress(item.progress)
-          }));
-          setLibrary(sanitized);
+          if (Array.isArray(parsed)) {
+            // Remove any legacy pre-seeded classic books so unauthenticated users start with an empty library
+            const realItems = parsed.filter(item => !item.id?.startsWith('classic-'));
+            const sanitized = realItems.map(item => ({
+              ...item,
+              progress: roundProgress(item.progress)
+            }));
+            setLibrary(sanitized);
+            localStorage.setItem('velocity_library', JSON.stringify(sanitized));
+          } else {
+            setLibrary([]);
+            localStorage.setItem('velocity_library', JSON.stringify([]));
+          }
         } catch (e) {
           console.error('Failed to parse library', e);
-          setLibrary(CLASSIC_LIBRARY_ITEMS);
+          setLibrary([]);
+          localStorage.setItem('velocity_library', JSON.stringify([]));
         }
       } else {
-        setLibrary(CLASSIC_LIBRARY_ITEMS);
+        setLibrary([]);
       }
       
       if (savedStats) {
         try {
           const parsed = JSON.parse(savedStats);
-          setStats(parsed && typeof parsed === 'object' ? { ...defaultStats, ...parsed } : defaultStats);
+          // If the stats match the previous hardcoded values (420000ms / 5 sessions / 480 wpm), reset to 0
+          if (parsed && (parsed.totalReadTimeMs === 420000 || (parsed.sessions === 5 && parsed.averageWpm === 480))) {
+            setStats(defaultStats);
+            localStorage.setItem('velocity_stats', JSON.stringify(defaultStats));
+          } else if (parsed && typeof parsed === 'object') {
+            setStats({ ...defaultStats, ...parsed });
+          } else {
+            setStats(defaultStats);
+            localStorage.setItem('velocity_stats', JSON.stringify(defaultStats));
+          }
         } catch (e) {
           console.error('Failed to parse stats', e);
+          setStats(defaultStats);
         }
+      } else {
+        setStats(defaultStats);
       }
     }
   }, []);
 
   // Save changes locally and sync with active account
   useEffect(() => {
-    if (library.length > 0) {
-      localStorage.setItem('velocity_library', JSON.stringify(library));
-    }
+    localStorage.setItem('velocity_library', JSON.stringify(library));
     localStorage.setItem('velocity_stats', JSON.stringify(stats));
 
     if (currentAccount) {
@@ -115,13 +132,19 @@ export default function App() {
   const handleAccountChange = useCallback((account: UserAccount | null) => {
     setCurrentAccount(account);
     if (account) {
-      const userLib = account.library && account.library.length > 0 ? account.library : CLASSIC_LIBRARY_ITEMS;
+      const userLib = Array.isArray(account.library) ? account.library : [];
       const sanitized = userLib.map(item => ({
         ...item,
         progress: roundProgress(item.progress)
       }));
       setLibrary(sanitized);
       setStats(account.stats || defaultStats);
+    } else {
+      // Switched to guest / logged out
+      setLibrary([]);
+      setStats(defaultStats);
+      localStorage.setItem('velocity_library', JSON.stringify([]));
+      localStorage.setItem('velocity_stats', JSON.stringify(defaultStats));
     }
   }, []);
 
@@ -136,6 +159,13 @@ export default function App() {
     setActiveTextId(text.id);
     setView('reader');
   }, []);
+
+  const handleDeleteText = useCallback((id: string) => {
+    setLibrary(prev => prev.filter(item => item.id !== id));
+    if (activeTextId === id) {
+      setActiveTextId(null);
+    }
+  }, [activeTextId]);
 
   const handleUpdateProgress = useCallback((id: string, progress: number) => {
     const rounded = roundProgress(progress);
@@ -152,7 +182,7 @@ export default function App() {
     if (timeMs < 1000) return; // Ignore sessions shorter than 1 second to avoid noise
     setStats(prev => {
       const newTotalSessions = prev.sessions + 1;
-      const newAvgWpm = ((prev.averageWpm * prev.sessions) + wpm) / newTotalSessions;
+      const newAvgWpm = prev.sessions === 0 ? wpm : Math.round(((prev.averageWpm * prev.sessions) + wpm) / newTotalSessions);
       
       return {
         ...prev,
@@ -191,6 +221,7 @@ export default function App() {
               setActiveTextId(id);
               setView('reader');
             }} 
+            onDeleteText={handleDeleteText}
           />
         )}
         

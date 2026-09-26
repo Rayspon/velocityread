@@ -47,7 +47,7 @@ export function DiscoverView({ setView }: { setView: (view: ViewState) => void }
   return (
     <div className="flex flex-col w-full pb-32 font-serif">
       {/* Hero Section */}
-      <section className="relative min-h-[80vh] flex flex-col justify-center items-center py-24 sm:py-32 px-4 sm:px-6 lg:px-12 text-center overflow-hidden">
+      <section className="relative min-h-[85vh] flex flex-col justify-center items-center pt-32 sm:pt-40 md:pt-48 pb-24 sm:pb-32 px-4 sm:px-6 lg:px-12 text-center overflow-hidden">
         {/* Soft Glow */}
         <div className="absolute inset-0 z-0 flex items-center justify-center opacity-30 pointer-events-none">
           <div className="w-[85vw] h-[85vw] max-w-[700px] max-h-[700px] bg-secondary/15 rounded-full blur-[140px]"></div>
@@ -61,7 +61,7 @@ export function DiscoverView({ setView }: { setView: (view: ViewState) => void }
             <span>☙</span>
           </div>
 
-          <h1 className="font-['Cinzel_Decorative'] text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-on-surface tracking-tight max-w-4xl mb-6 leading-[1.18]">
+          <h1 className="font-['Cinzel_Decorative'] text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-on-surface tracking-tight max-w-4xl mt-2 sm:mt-3 mb-6 leading-[1.18]">
             Read Faster & Understand More
           </h1>
           

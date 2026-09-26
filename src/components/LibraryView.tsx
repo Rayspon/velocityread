@@ -5,12 +5,8 @@ import {
   Clock, 
   Zap, 
   BookOpen, 
-  Bookmark, 
-  Feather, 
   CheckCircle2, 
-  Library as LibraryIcon,
-  Sparkles,
-  ArrowRight
+  Trash2
 } from 'lucide-react';
 import { TextItem, ViewState, UserStats } from '../types';
 
@@ -18,10 +14,11 @@ interface LibraryViewProps {
   library: TextItem[];
   setView: (view: ViewState) => void;
   onSelectText: (id: string) => void;
+  onDeleteText?: (id: string) => void;
   stats: UserStats;
 }
 
-export function LibraryView({ library, setView, onSelectText, stats }: LibraryViewProps) {
+export function LibraryView({ library, setView, onSelectText, onDeleteText, stats }: LibraryViewProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<'all' | 'books' | 'articles'>('all');
 
@@ -29,6 +26,7 @@ export function LibraryView({ library, setView, onSelectText, stats }: LibraryVi
   const activeTexts = safeLibrary.filter(t => t.progress < 100).length;
 
   const formatTime = (ms: number) => {
+    if (!ms || ms <= 0) return '0m';
     const totalMinutes = Math.floor(ms / 60000);
     const hours = Math.floor(totalMinutes / 60);
     const minutes = totalMinutes % 60;
@@ -66,7 +64,7 @@ export function LibraryView({ library, setView, onSelectText, stats }: LibraryVi
         </p>
       </div>
 
-      {/* Stats Grid - Modern English */}
+      {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-10 md:mb-14">
         <div className="bg-surface-container/60 rounded-xl p-5 md:p-6 border border-outline-variant/50 relative overflow-hidden antique-border">
           <div className="flex items-center justify-between">
@@ -94,7 +92,7 @@ export function LibraryView({ library, setView, onSelectText, stats }: LibraryVi
                 Average Speed
               </p>
               <p className="font-['Cinzel'] text-2xl md:text-3xl font-bold text-on-surface">
-                {Math.round(stats.averageWpm)}{' '}
+                {Math.round(stats.averageWpm || 0)}{' '}
                 <span className="text-sm font-normal text-on-surface-variant">WPM</span>
               </p>
               <p className="text-xs text-on-surface-variant/80 italic mt-1 font-['EB_Garamond']">
@@ -135,180 +133,233 @@ export function LibraryView({ library, setView, onSelectText, stats }: LibraryVi
         <div className="flex flex-wrap items-center gap-3">
           <button 
             onClick={() => setView('input')}
-            className="w-full sm:w-auto bg-primary text-on-primary px-6 py-3 rounded-lg border border-primary/50 flex items-center justify-center gap-2 hover:opacity-90 active:scale-98 transition-all shadow-sm group min-h-[44px]"
+            className="w-full sm:w-auto bg-primary text-on-primary px-6 py-3 rounded-lg border border-primary/50 flex items-center justify-center gap-2 hover:opacity-90 active:scale-98 transition-all shadow-sm group min-h-[44px] cursor-pointer"
           >
             <Plus className="w-4 h-4 text-on-primary group-hover:rotate-90 transition-transform" />
             <span className="font-['Cinzel'] font-bold text-xs uppercase tracking-wider">Add New Text</span>
           </button>
           
-          <div className="h-6 w-px bg-outline-variant/60 hidden sm:block"></div>
-          
-          {/* Category filters */}
-          <div className="flex items-center gap-1 bg-surface-container p-1 rounded-lg border border-outline-variant/40 w-full sm:w-auto justify-between sm:justify-start">
-            <button 
-              onClick={() => setFilterType('all')}
-              className={`flex-1 sm:flex-none px-3.5 py-2 rounded-md text-xs font-['Cinzel'] tracking-wider uppercase transition-colors min-h-[40px] flex items-center justify-center ${
-                filterType === 'all' 
-                  ? 'bg-surface text-primary font-bold shadow-xs border border-outline-variant/50' 
-                  : 'text-on-surface-variant hover:text-on-surface'
-              }`}
-            >
-              All ({safeLibrary.length})
-            </button>
-            <button 
-              onClick={() => setFilterType('books')}
-              className={`flex-1 sm:flex-none px-3.5 py-2 rounded-md text-xs font-['Cinzel'] tracking-wider uppercase transition-colors min-h-[40px] flex items-center justify-center ${
-                filterType === 'books' 
-                  ? 'bg-surface text-primary font-bold shadow-xs border border-outline-variant/50' 
-                  : 'text-on-surface-variant hover:text-on-surface'
-              }`}
-            >
-              Books
-            </button>
-            <button 
-              onClick={() => setFilterType('articles')}
-              className={`flex-1 sm:flex-none px-3.5 py-2 rounded-md text-xs font-['Cinzel'] tracking-wider uppercase transition-colors min-h-[40px] flex items-center justify-center ${
-                filterType === 'articles' 
-                  ? 'bg-surface text-primary font-bold shadow-xs border border-outline-variant/50' 
-                  : 'text-on-surface-variant hover:text-on-surface'
-              }`}
-            >
-              Articles
-            </button>
-          </div>
+          {safeLibrary.length > 0 && (
+            <>
+              <div className="h-6 w-px bg-outline-variant/60 hidden sm:block"></div>
+              
+              {/* Category filters */}
+              <div className="flex items-center gap-1 bg-surface-container p-1 rounded-lg border border-outline-variant/40 w-full sm:w-auto justify-between sm:justify-start">
+                <button 
+                  onClick={() => setFilterType('all')}
+                  className={`flex-1 sm:flex-none px-3.5 py-2 rounded-md text-xs font-['Cinzel'] tracking-wider uppercase transition-colors min-h-[40px] flex items-center justify-center cursor-pointer ${
+                    filterType === 'all' 
+                      ? 'bg-surface text-primary font-bold shadow-xs border border-outline-variant/50' 
+                      : 'text-on-surface-variant hover:text-on-surface'
+                  }`}
+                >
+                  All Items
+                </button>
+                <button 
+                  onClick={() => setFilterType('books')}
+                  className={`flex-1 sm:flex-none px-3.5 py-2 rounded-md text-xs font-['Cinzel'] tracking-wider uppercase transition-colors min-h-[40px] flex items-center justify-center cursor-pointer ${
+                    filterType === 'books' 
+                      ? 'bg-surface text-primary font-bold shadow-xs border border-outline-variant/50' 
+                      : 'text-on-surface-variant hover:text-on-surface'
+                  }`}
+                >
+                  Books
+                </button>
+                <button 
+                  onClick={() => setFilterType('articles')}
+                  className={`flex-1 sm:flex-none px-3.5 py-2 rounded-md text-xs font-['Cinzel'] tracking-wider uppercase transition-colors min-h-[40px] flex items-center justify-center cursor-pointer ${
+                    filterType === 'articles' 
+                      ? 'bg-surface text-primary font-bold shadow-xs border border-outline-variant/50' 
+                      : 'text-on-surface-variant hover:text-on-surface'
+                  }`}
+                >
+                  Articles
+                </button>
+              </div>
+            </>
+          )}
         </div>
         
         {/* Search */}
-        <div className="relative w-full lg:w-80">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant w-4 h-4" />
-          <input 
-            type="text" 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by title or author..." 
-            className="w-full bg-surface-container text-on-surface text-sm pl-10 pr-4 py-2.5 rounded-lg border border-outline-variant/60 focus:border-secondary focus:outline-none transition-colors placeholder:text-on-surface-variant/60 placeholder:italic font-['EB_Garamond'] text-base min-h-[44px]"
-          />
-        </div>
-      </div>
-
-      {/* Book Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-7">
-        {filteredLibrary.map((item, idx) => {
-          const rawProgress = typeof item.progress === 'number' ? item.progress : 0;
-          const isDone = rawProgress >= 100;
-          const displayProgress = isDone ? 100 : Math.min(99, Math.ceil(rawProgress));
-
-          return (
-            <button 
-              key={item.id}
-              onClick={() => onSelectText(item.id)}
-              className="group text-left relative bg-surface-container rounded-xl p-6 flex flex-col h-[320px] sm:h-[330px] border border-outline-variant/70 book-card-emboss hover:border-secondary transition-all cursor-pointer overflow-hidden shadow-xs"
-            >
-              {/* Left Spine Accent */}
-              <div className="absolute left-0 top-0 bottom-0 w-3 bg-gradient-to-r from-primary/25 via-primary/10 to-transparent border-r border-outline-variant/40 flex flex-col justify-between py-5">
-                <div className="w-full h-1 bg-secondary/50"></div>
-                <div className="w-full h-1 bg-secondary/50"></div>
-                <div className="w-full h-1 bg-secondary/50"></div>
-              </div>
-
-              {/* Silk Ribbon Bookmark */}
-              {!isDone && (
-                <div 
-                  className="absolute top-0 right-5 w-6 bg-primary shadow-md flex items-center justify-center text-on-primary text-[10px] font-['Cinzel'] font-bold pb-1.5 pt-1 rounded-b z-10 transition-transform group-hover:translate-y-1"
-                  title={`Bookmark: ${displayProgress}% completed`}
-                >
-                  <span>{displayProgress}%</span>
-                </div>
-              )}
-
-              {/* Header: Book Type & Index */}
-              <div className="flex justify-between items-center mb-3 pl-2 pr-6">
-                <span className="font-['Cinzel'] text-[11px] tracking-widest text-on-surface-variant uppercase font-semibold">
-                  {item.type} {idx + 1}
-                </span>
-
-                {isDone && (
-                  <span className="flex items-center gap-1 text-[10px] font-['Cinzel'] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/50 px-2 py-0.5 rounded border border-tertiary/30">
-                    <CheckCircle2 className="w-3 h-3" />
-                    Completed
-                  </span>
-                )}
-              </div>
-              
-              {/* Title & Author */}
-              <div className="flex-1 min-w-0 pl-2 pr-1 flex flex-col">
-                <h3 className="font-['Cinzel'] font-bold text-lg leading-snug text-on-surface mb-2 line-clamp-3 group-hover:text-primary transition-colors">
-                  {item.title}
-                </h3>
-                
-                {item.author && (
-                  <p className="font-['IM_Fell_English'] italic text-sm text-on-surface-variant line-clamp-1 mb-2">
-                    by {item.author}
-                  </p>
-                )}
-
-                <p className="font-['EB_Garamond'] text-xs text-on-surface-variant/80 line-clamp-3 leading-relaxed mt-auto pt-2 border-t border-outline-variant/30">
-                  {item.content.substring(0, 150)}...
-                </p>
-              </div>
-              
-              {/* Footer: Progress Indicator */}
-              <div className="mt-3 pt-3 pl-2 border-t border-outline-variant/40 w-full">
-                <div className="flex justify-between items-center text-xs mb-1.5">
-                  <span className="font-['Cinzel'] text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold">
-                    {isDone ? 'Completed' : 'Reading Progress'}
-                  </span>
-                  <span className="font-['Cinzel'] font-bold text-xs text-on-surface">
-                    {displayProgress}%
-                  </span>
-                </div>
-                
-                {/* Progress Bar */}
-                <div className="h-1.5 w-full bg-surface-dim rounded-full border border-outline-variant/40 overflow-hidden p-[1px]">
-                  <div 
-                    className={`h-full rounded-full transition-all duration-300 ${
-                      isDone 
-                        ? 'bg-gradient-to-r from-secondary to-tertiary' 
-                        : 'bg-gradient-to-r from-secondary via-primary to-primary'
-                    }`} 
-                    style={{ width: `${displayProgress}%` }}
-                  ></div>
-                </div>
-              </div>
-            </button>
-          );
-        })}
-
-        {/* Add New Card Slot */}
-        <button 
-          onClick={() => setView('input')}
-          className="group bg-surface-container-low hover:bg-surface-container border border-dashed border-outline-variant/80 hover:border-secondary transition-all rounded-xl p-6 flex flex-col items-center justify-center h-[320px] sm:h-[330px] text-center cursor-pointer shadow-xs min-h-[44px]"
-        >
-          <div className="w-14 h-14 rounded-full bg-surface border border-outline-variant group-hover:border-secondary flex items-center justify-center mb-4 transition-colors shadow-xs">
-            <Plus className="w-6 h-6 text-on-surface-variant group-hover:text-primary transition-colors" />
+        {safeLibrary.length > 0 && (
+          <div className="relative w-full lg:w-80">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant w-4 h-4" />
+            <input 
+              type="text" 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by title or author..." 
+              className="w-full bg-surface-container text-on-surface text-sm pl-10 pr-4 py-2.5 rounded-lg border border-outline-variant/60 focus:border-secondary focus:outline-none transition-colors placeholder:text-on-surface-variant/60 placeholder:italic font-['EB_Garamond'] text-base min-h-[44px]"
+            />
           </div>
-          <span className="font-['Cinzel'] text-base font-bold text-on-surface group-hover:text-primary transition-colors uppercase tracking-wider">
-            Add New Text
-          </span>
-          <span className="font-['EB_Garamond'] italic text-sm text-on-surface-variant/80 mt-2 max-w-[200px]">
-            Paste text or scan a physical book page with your camera
-          </span>
-          <span className="font-['Cinzel'] text-xs text-secondary tracking-widest uppercase mt-4 flex items-center gap-1.5 font-bold group-hover:underline">
-            <span>+ Add to Library</span>
-          </span>
-        </button>
+        )}
       </div>
 
-      {filteredLibrary.length === 0 && (
-        <div className="text-center py-16 bg-surface-container rounded-xl border border-outline-variant/50 my-6">
-          <p className="font-['Cinzel'] text-base text-on-surface-variant">No items found matching your search.</p>
-          <button 
-            onClick={() => { setSearchQuery(''); setFilterType('all'); }}
-            className="mt-3 font-['Cinzel'] text-xs text-primary underline uppercase tracking-wider font-bold"
+      {/* Library Content */}
+      {safeLibrary.length === 0 ? (
+        <div className="text-center py-16 px-6 bg-surface-container/50 rounded-2xl border border-outline-variant/60 antique-border my-6 max-w-xl mx-auto flex flex-col items-center">
+          <div className="w-16 h-16 rounded-2xl bg-surface border border-outline-variant/70 flex items-center justify-center mb-5 text-secondary shadow-xs">
+            <BookOpen className="w-8 h-8 text-secondary/90" />
+          </div>
+          <h2 className="font-['Cinzel'] font-bold text-2xl text-on-surface mb-2 tracking-wide">
+            Your Library is Empty
+          </h2>
+          <p className="font-['EB_Garamond'] text-lg text-on-surface-variant max-w-md mx-auto mb-7 leading-relaxed">
+            There are no books or texts in your library yet. Add your own text, article, or paste an excerpt to begin speed reading.
+          </p>
+          <button
+            onClick={() => setView('input')}
+            className="inline-flex items-center gap-2.5 bg-primary text-on-primary px-8 py-3.5 rounded-xl font-['Cinzel'] font-bold text-xs uppercase tracking-widest hover:opacity-90 active:scale-98 transition-all shadow-md min-h-[48px] cursor-pointer"
           >
-            Clear Filter
+            <Plus className="w-4 h-4" />
+            <span>Add Your First Text</span>
           </button>
         </div>
+      ) : (
+        <>
+          {/* Book Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-7">
+            {filteredLibrary.map((item, idx) => {
+              const rawProgress = typeof item.progress === 'number' ? item.progress : 0;
+              const isDone = rawProgress >= 100;
+              const displayProgress = isDone ? 100 : Math.min(99, Math.ceil(rawProgress));
+
+              return (
+                <button 
+                  key={item.id}
+                  onClick={() => onSelectText(item.id)}
+                  className="group text-left relative bg-surface-container rounded-xl p-6 flex flex-col h-[320px] sm:h-[330px] border border-outline-variant/70 book-card-emboss hover:border-secondary transition-all cursor-pointer overflow-hidden shadow-xs"
+                >
+                  {/* Left Spine Accent */}
+                  <div className="absolute left-0 top-0 bottom-0 w-3 bg-gradient-to-r from-primary/25 via-primary/10 to-transparent border-r border-outline-variant/40 flex flex-col justify-between py-5">
+                    <div className="w-full h-1 bg-secondary/50"></div>
+                    <div className="w-full h-1 bg-secondary/50"></div>
+                    <div className="w-full h-1 bg-secondary/50"></div>
+                  </div>
+
+                  {/* Silk Ribbon Bookmark */}
+                  {!isDone && (
+                    <div 
+                      className="absolute top-0 right-5 w-6 bg-primary shadow-md flex items-center justify-center text-on-primary text-[10px] font-['Cinzel'] font-bold pb-1.5 pt-1 rounded-b z-10 transition-transform group-hover:translate-y-1"
+                      title={`Bookmark: ${displayProgress}% completed`}
+                    >
+                      <span>{displayProgress}%</span>
+                    </div>
+                  )}
+
+                  {/* Header: Book Type & Index & Delete */}
+                  <div className="flex justify-between items-center mb-3 pl-2 pr-6">
+                    <span className="font-['Cinzel'] text-[11px] tracking-widest text-on-surface-variant uppercase font-semibold">
+                      {item.type} {idx + 1}
+                    </span>
+
+                    <div className="flex items-center gap-2">
+                      {isDone && (
+                        <span className="flex items-center gap-1 text-[10px] font-['Cinzel'] font-bold text-tertiary uppercase tracking-wider bg-tertiary-container/50 px-2 py-0.5 rounded border border-tertiary/30">
+                          <CheckCircle2 className="w-3 h-3" />
+                          Completed
+                        </span>
+                      )}
+
+                      {onDeleteText && (
+                        <span
+                          role="button"
+                          tabIndex={0}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDeleteText(item.id);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.stopPropagation();
+                              onDeleteText(item.id);
+                            }
+                          }}
+                          title="Remove from library"
+                          className="p-1 rounded text-on-surface-variant/40 hover:text-primary hover:bg-surface/80 transition-colors"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* Title & Author */}
+                  <div className="flex-1 min-w-0 pl-2 pr-1 flex flex-col">
+                    <h3 className="font-['Cinzel'] font-bold text-lg leading-snug text-on-surface mb-2 line-clamp-3 group-hover:text-primary transition-colors">
+                      {item.title}
+                    </h3>
+                    
+                    {item.author && (
+                      <p className="font-['IM_Fell_English'] italic text-sm text-on-surface-variant line-clamp-1 mb-2">
+                        by {item.author}
+                      </p>
+                    )}
+
+                    <p className="font-['EB_Garamond'] text-xs text-on-surface-variant/80 line-clamp-3 leading-relaxed mt-auto pt-2 border-t border-outline-variant/30">
+                      {item.content.substring(0, 150)}...
+                    </p>
+                  </div>
+                  
+                  {/* Footer: Progress Indicator */}
+                  <div className="mt-3 pt-3 pl-2 border-t border-outline-variant/40 w-full">
+                    <div className="flex justify-between items-center text-xs mb-1.5">
+                      <span className="font-['Cinzel'] text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold">
+                        {isDone ? 'Completed' : 'Reading Progress'}
+                      </span>
+                      <span className="font-['Cinzel'] font-bold text-xs text-on-surface">
+                        {displayProgress}%
+                      </span>
+                    </div>
+                    
+                    {/* Progress Bar */}
+                    <div className="h-1.5 w-full bg-surface-dim rounded-full border border-outline-variant/40 overflow-hidden p-[1px]">
+                      <div 
+                        className={`h-full rounded-full transition-all duration-300 ${
+                          isDone 
+                            ? 'bg-gradient-to-r from-secondary to-tertiary' 
+                            : 'bg-gradient-to-r from-secondary via-primary to-primary'
+                        }`} 
+                        style={{ width: `${displayProgress}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+
+            {/* Add New Card Slot */}
+            <button 
+              onClick={() => setView('input')}
+              className="group bg-surface-container-low hover:bg-surface-container border border-dashed border-outline-variant/80 hover:border-secondary transition-all rounded-xl p-6 flex flex-col items-center justify-center h-[320px] sm:h-[330px] text-center cursor-pointer shadow-xs min-h-[44px]"
+            >
+              <div className="w-14 h-14 rounded-full bg-surface border border-outline-variant group-hover:border-secondary flex items-center justify-center mb-4 transition-colors shadow-xs">
+                <Plus className="w-6 h-6 text-on-surface-variant group-hover:text-primary transition-colors" />
+              </div>
+              <span className="font-['Cinzel'] text-base font-bold text-on-surface group-hover:text-primary transition-colors uppercase tracking-wider">
+                Add New Text
+              </span>
+              <span className="font-['EB_Garamond'] italic text-sm text-on-surface-variant/80 mt-2 max-w-[200px]">
+                Paste text or scan a physical book page with your camera
+              </span>
+              <span className="font-['Cinzel'] text-xs text-secondary tracking-widest uppercase mt-4 flex items-center gap-1.5 font-bold group-hover:underline">
+                <span>+ Add to Library</span>
+              </span>
+            </button>
+          </div>
+
+          {filteredLibrary.length === 0 && (
+            <div className="text-center py-16 bg-surface-container rounded-xl border border-outline-variant/50 my-6">
+              <p className="font-['Cinzel'] text-base text-on-surface-variant">No items found matching your search.</p>
+              <button 
+                onClick={() => { setSearchQuery(''); setFilterType('all'); }}
+                className="mt-3 font-['Cinzel'] text-xs text-primary underline uppercase tracking-wider font-bold cursor-pointer"
+              >
+                Clear Filter
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

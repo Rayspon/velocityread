@@ -80,7 +80,7 @@ export function registerAccount(
     library: initialLibrary || [],
     stats: initialStats || {
       totalReadTimeMs: 0,
-      averageWpm: 450,
+      averageWpm: 0,
       totalWordsRead: 0,
       sessions: 0
     }
