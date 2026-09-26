@@ -1,63 +1,69 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500&family=Geist:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-surface: #121414;
-  --color-surface-dim: #121414;
-  --color-surface-bright: #383939;
-  --color-surface-container-lowest: #0d0e0f;
-  --color-surface-container-low: #1b1c1c;
-  --color-surface-container: #1f2020;
-  --color-surface-container-high: #292a2a;
-  --color-surface-container-highest: #343535;
-  --color-on-surface: #e3e2e2;
-  --color-on-surface-variant: #c4c7c7;
-  --color-inverse-surface: #e3e2e2;
-  --color-inverse-on-surface: #303031;
+  --color-surface: #f4eee1;
+  --color-surface-dim: #ebdcc6;
+  --color-surface-bright: #fcf9f2;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #efe5d3;
+  --color-surface-container: #e6d7c2;
+  --color-surface-container-high: #dbcab0;
+  --color-surface-container-highest: #d0bda1;
   
-  --color-outline: #8e9192;
-  --color-outline-variant: #444748;
-  --color-surface-tint: #c8c6c5;
-  --color-primary: #c8c6c5;
-  --color-on-primary: #313030;
-  --color-primary-container: #1a1a1a;
-  --color-on-primary-container: #848282;
+  --color-on-surface: #241c17;
+  --color-on-surface-variant: #5f4e41;
+  --color-inverse-surface: #261e19;
+  --color-inverse-on-surface: #f7f2e8;
   
-  --color-secondary: #c6c6c7;
-  --color-on-secondary: #2f3131;
-  --color-secondary-container: #454747;
-  --color-on-secondary-container: #b4b5b5;
+  --color-outline: #a4917e;
+  --color-outline-variant: #cbbaa8;
+  --color-surface-tint: #882b20;
   
-  --color-tertiary: #b3c5ff;
-  --color-on-tertiary: #002b75;
-  --color-tertiary-container: #001645;
-  --color-on-tertiary-container: #417bff;
+  --color-primary: #882b20;
+  --color-on-primary: #faf5ec;
+  --color-primary-container: #eed5c7;
+  --color-on-primary-container: #4f150f;
+  
+  --color-secondary: #996f2a;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #faeecf;
+  --color-on-secondary-container: #422d05;
+  
+  --color-tertiary: #304e3b;
+  --color-on-tertiary: #f4f8f5;
+  --color-tertiary-container: #d2e4d7;
+  --color-on-tertiary-container: #12291b;
 
-  --color-error: #ffb4ab;
-  --color-on-error: #690005;
+  --color-error: #9e2a2b;
+  --color-on-error: #ffffff;
 
-  --color-primary-fixed: #e5e2e1;
-  --color-primary-fixed-dim: #c8c6c5;
-  --color-on-primary-fixed: #1c1b1b;
+  --color-primary-fixed: #882b20;
+  --color-primary-fixed-dim: #702117;
+  --color-on-primary-fixed: #ffffff;
   
-  --color-secondary-fixed: #e2e2e2;
-  --color-secondary-fixed-dim: #c6c6c7;
-  --color-on-secondary-fixed: #1a1c1c;
+  --color-secondary-fixed: #b38536;
+  --color-secondary-fixed-dim: #996f2a;
+  --color-on-secondary-fixed: #ffffff;
 
-  --color-tertiary-fixed: #dae1ff;
-  --color-tertiary-fixed-dim: #b3c5ff;
-  --color-on-tertiary-fixed: #001849;
+  --color-tertiary-fixed: #3b5c46;
+  --color-tertiary-fixed-dim: #2b4534;
+  --color-on-tertiary-fixed: #ffffff;
 
-  --color-background: #121414;
-  --color-on-background: #e3e2e2;
-  --color-surface-variant: #343535;
+  --color-background: #f4eee1;
+  --color-on-background: #241c17;
+  --color-surface-variant: #ded0bc;
   
-  --font-reading-display: 'Be Vietnam Pro', sans-serif;
-  --font-headline-lg: 'Geist', sans-serif;
-  --font-headline-md: 'Geist', sans-serif;
-  --font-body-lg: 'Geist', sans-serif;
-  --font-body-md: 'Geist', sans-serif;
-  --font-label-sm: 'Geist', sans-serif;
+  --font-reading-display: 'Helvetica Neue', Helvetica, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  --font-headline-lg: 'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-headline-md: 'Cinzel', Georgia, serif;
+  --font-body-lg: 'EB Garamond', Georgia, serif;
+  --font-body-md: 'EB Garamond', Georgia, serif;
+  --font-label-sm: 'Cinzel', Georgia, serif;
+  --font-serif: 'EB Garamond', Georgia, serif;
+  --font-antique: 'Cinzel Decorative', serif;
+  --font-cinzel: 'Cinzel', serif;
+  --font-fell: 'IM Fell English', serif;
+  --font-marginalia: 'Special Elite', monospace;
   
   --spacing-unit: 8px;
   --spacing-container-max: 1200px;
@@ -66,11 +72,187 @@
   --spacing-margin-mobile: 16px;
 }
 
+/* Dark Antiquarian Leather Palette */
+.theme-dark-leather {
+  --color-surface: #17120e;
+  --color-surface-dim: #110e0b;
+  --color-surface-bright: #27201a;
+  --color-surface-container-lowest: #0e0b08;
+  --color-surface-container-low: #1e1814;
+  --color-surface-container: #261f19;
+  --color-surface-container-high: #322922;
+  --color-surface-container-highest: #3f352d;
+  
+  --color-on-surface: #ede2d2;
+  --color-on-surface-variant: #bda893;
+  --color-inverse-surface: #f4eee1;
+  --color-inverse-on-surface: #241c17;
+  
+  --color-outline: #685746;
+  --color-outline-variant: #43372c;
+  --color-surface-tint: #c59b27;
+  
+  --color-primary: #c24132;
+  --color-on-primary: #fff8f5;
+  --color-primary-container: #471914;
+  --color-on-primary-container: #f5cfca;
+  
+  --color-secondary: #c59b27;
+  --color-on-secondary: #241804;
+  --color-secondary-container: #47360e;
+  --color-on-secondary-container: #f6e2b1;
+  
+  --color-tertiary: #6b9e7c;
+  --color-on-tertiary: #081d10;
+  --color-tertiary-container: #1b3824;
+  --color-on-tertiary-container: #c4e4ce;
+
+  --color-error: #e06060;
+  --color-on-error: #2b0404;
+
+  --color-primary-fixed: #c24132;
+  --color-primary-fixed-dim: #a63124;
+  --color-on-primary-fixed: #ffffff;
+  
+  --color-secondary-fixed: #d4af37;
+  --color-secondary-fixed-dim: #b59226;
+  --color-on-secondary-fixed: #1e1402;
+
+  --color-tertiary-fixed: #7db58f;
+  --color-tertiary-fixed-dim: #609470;
+  --color-on-tertiary-fixed: #05140b;
+
+  --color-background: #17120e;
+  --color-on-background: #ede2d2;
+  --color-surface-variant: #342a22;
+}
+
 @layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
   body {
     background-color: var(--color-surface);
     color: var(--color-on-surface);
-    font-family: var(--font-body-md);
+    font-family: 'EB Garamond', Georgia, serif;
+    background-image: 
+      radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.04) 0%, transparent 60%),
+      radial-gradient(circle at 100% 100%, rgba(136, 43, 32, 0.02) 0%, transparent 40%);
+    overflow-x: hidden;
   }
 }
 
+/* Reading font styles */
+.font-reading-helvetica {
+  font-family: "Helvetica Neue", Helvetica, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+}
+.font-reading-inter {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.font-reading-garamond {
+  font-family: 'EB Garamond', Georgia, serif;
+}
+.font-reading-fell {
+  font-family: 'IM Fell English', Georgia, serif;
+}
+.font-reading-merriweather {
+  font-family: 'Merriweather', Georgia, serif;
+}
+.font-reading-cinzel {
+  font-family: 'Cinzel', Georgia, serif;
+}
+.font-reading-georgia {
+  font-family: Georgia, 'Times New Roman', serif;
+}
+.font-reading-mono {
+  font-family: 'Special Elite', 'Courier Prime', Courier, monospace;
+}
+
+/* Custom Antique Book & Parchment Utility Styles */
+.antique-border {
+  border: 1px solid var(--color-outline-variant);
+  box-shadow: 
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+    inset 0 0 15px rgba(164, 145, 126, 0.08),
+    0 4px 14px -3px rgba(36, 28, 23, 0.05);
+}
+
+.theme-dark-leather .antique-border {
+  border: 1px solid var(--color-outline-variant);
+  box-shadow: 
+    inset 0 0 0 1px rgba(212, 175, 55, 0.12),
+    inset 0 0 20px rgba(0, 0, 0, 0.45),
+    0 6px 18px -4px rgba(0, 0, 0, 0.4);
+}
+
+.book-card-emboss {
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  background-image: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(0,0,0,0.02) 100%);
+}
+
+.book-card-emboss:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 24px -6px rgba(45, 34, 27, 0.12),
+    0 2px 6px -1px rgba(45, 34, 27, 0.06);
+}
+
+.theme-dark-leather .book-card-emboss {
+  background-image: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0.25) 100%);
+}
+
+.theme-dark-leather .book-card-emboss:hover {
+  box-shadow: 
+    0 14px 28px -6px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(197, 155, 39, 0.15);
+}
+
+/* Parchment paper texture look */
+.parchment-sheet {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-outline-variant);
+}
+
+/* Woodcut ornament divider */
+.ornament-line {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.ornament-line::before,
+.ornament-line::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--color-outline-variant);
+  opacity: 0.5;
+}
+
+.ornament-line:not(:empty)::before {
+  margin-right: 1.25em;
+}
+
+.ornament-line:not(:empty)::after {
+  margin-left: 1.25em;
+}
+
+/* Custom styled scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface-container-low);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-outline);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-on-surface-variant);
+}

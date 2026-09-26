@@ -1,5 +1,16 @@
 import { useState, useEffect } from 'react';
-import { EyeOff, SlidersHorizontal, TrendingUp, Play, Pause, ArrowRight } from 'lucide-react';
+import { 
+  EyeOff, 
+  SlidersHorizontal, 
+  TrendingUp, 
+  Play, 
+  Pause, 
+  ArrowRight,
+  BookOpen,
+  Plus,
+  Clock,
+  Sparkles
+} from 'lucide-react';
 import { ViewState } from '../types';
 
 export function DiscoverView({ setView }: { setView: (view: ViewState) => void }) {
@@ -8,22 +19,21 @@ export function DiscoverView({ setView }: { setView: (view: ViewState) => void }
 
   const demoWords = [
     { text: "Velocity", focus: 3 },
-    { text: "is", focus: 0 },
-    { text: "designed", focus: 4 },
-    { text: "to", focus: 1 },
-    { text: "eliminate", focus: 4 },
+    { text: "eliminates", focus: 3 },
+    { text: "all", focus: 1 },
     { text: "friction", focus: 3 },
     { text: "between", focus: 3 },
-    { text: "you", focus: 1 },
-    { text: "and", focus: 1 },
     { text: "the", focus: 1 },
-    { text: "text.", focus: 2 }
+    { text: "written", focus: 2 },
+    { text: "word", focus: 1 },
+    { text: "and", focus: 1 },
+    { text: "your", focus: 1 },
+    { text: "mind.", focus: 2 }
   ];
 
   useEffect(() => {
     let interval: number;
     if (isPlaying) {
-      // 450 WPM = 60,000ms / 450 words = ~133ms per word
       const intervalMs = Math.round(60000 / 450);
       interval = window.setInterval(() => {
         setDemoWordIndex(prev => (prev + 1) % demoWords.length);
@@ -35,122 +45,212 @@ export function DiscoverView({ setView }: { setView: (view: ViewState) => void }
   const currentWord = demoWords[demoWordIndex];
 
   return (
-    <div className="flex flex-col w-full pb-32">
+    <div className="flex flex-col w-full pb-32 font-serif">
       {/* Hero Section */}
-      <section className="relative min-h-[80vh] flex flex-col justify-center items-center py-24 px-4 lg:px-6 text-center overflow-hidden">
+      <section className="relative min-h-[80vh] flex flex-col justify-center items-center py-24 sm:py-32 px-4 sm:px-6 lg:px-12 text-center overflow-hidden">
+        {/* Soft Glow */}
         <div className="absolute inset-0 z-0 flex items-center justify-center opacity-30 pointer-events-none">
-          <div className="w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] bg-tertiary-fixed-dim/20 rounded-full blur-[120px]"></div>
-          <div className="absolute w-[60vw] h-[60vw] max-w-[600px] max-h-[600px] bg-primary/10 rounded-full blur-[80px] -translate-x-1/4 -translate-y-1/4"></div>
+          <div className="w-[85vw] h-[85vw] max-w-[700px] max-h-[700px] bg-secondary/15 rounded-full blur-[140px]"></div>
+          <div className="absolute w-[55vw] h-[55vw] max-w-[500px] max-h-[500px] bg-primary/10 rounded-full blur-[100px] -translate-x-1/4 -translate-y-1/4"></div>
         </div>
         
-        <div className="relative z-10 max-w-[1200px] mx-auto flex flex-col items-center">
-          <h1 className="font-['Be_Vietnam_Pro'] text-5xl md:text-[80px] md:leading-[1.1] font-medium text-on-surface tracking-tight max-w-4xl mb-6">
-            Read Faster.<br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-on-surface to-surface-tint">Know More.</span>
+        <div className="relative z-10 max-w-[1000px] mx-auto flex flex-col items-center">
+          <div className="inline-flex items-center gap-2.5 text-secondary text-xs uppercase tracking-[0.25em] font-['Cinzel'] mb-4 font-bold">
+            <span>❧</span>
+            <span>Speed Reading With RSVP</span>
+            <span>☙</span>
+          </div>
+
+          <h1 className="font-['Cinzel_Decorative'] text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-on-surface tracking-tight max-w-4xl mb-6 leading-[1.18]">
+            Read Faster & Understand More
           </h1>
           
-          <p className="text-lg md:text-xl text-on-surface-variant max-w-2xl mb-12 opacity-80">
-            Harness the power of Rapid Serial Visual Presentation (RSVP). Eliminate eye movement. Devour books, articles, and documents at speeds you never thought possible.
+          <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-secondary to-transparent mb-6"></div>
+
+          <p className="font-['EB_Garamond'] text-lg sm:text-xl md:text-2xl text-on-surface-variant max-w-2xl mb-10 leading-relaxed italic">
+            "Eliminate eye movement and inner vocalization. Rapid Serial Visual Presentation delivers words sequentially directly to your focal point."
           </p>
           
+          {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 items-center w-full sm:w-auto">
-            <button onClick={() => setView('library')} className="w-full sm:w-auto px-8 py-4 bg-primary text-on-primary font-semibold text-lg rounded-xl shadow-md hover:bg-primary-fixed-dim hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 group">
-              Start Reading Now
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <button 
+              onClick={() => setView('library')} 
+              className="w-full sm:w-auto px-8 py-4 bg-primary text-on-primary font-['Cinzel'] font-bold text-xs uppercase tracking-wider rounded-lg border border-secondary/50 shadow-md hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group min-h-[48px]"
+            >
+              <span>Go to Library</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
+
+            <button 
+              onClick={() => setView('input')} 
+              className="w-full sm:w-auto px-7 py-4 bg-surface-container text-on-surface font-['Cinzel'] font-bold text-xs uppercase tracking-wider rounded-lg border border-outline-variant/70 hover:bg-surface-container-high transition-all flex items-center justify-center gap-2 min-h-[48px]"
+            >
+              <Plus className="w-4 h-4 text-primary" />
+              <span>Add Your Own Text</span>
             </button>
           </div>
         </div>
       </section>
 
-      {/* Interactive Demo Section */}
-      <section className="py-24 px-4 lg:px-6 bg-surface-container-low relative">
-        <div className="max-w-[1200px] mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-semibold text-on-surface mb-4">The Velocity Method</h2>
-            <p className="text-base text-on-surface-variant max-w-xl mx-auto">By flashing words exactly where your eyes are resting, we eliminate saccades (eye movements) and sub-vocalization, unlocking pure cognitive absorption.</p>
+      {/* Interactive RSVP Demo */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-12 bg-surface-container-low border-y border-outline-variant/60 relative">
+        <div className="max-w-[1000px] mx-auto">
+          <div className="text-center mb-10 md:mb-14">
+            <div className="text-secondary text-xs uppercase tracking-[0.25em] font-['Cinzel'] mb-1 font-bold">
+              Interactive Demonstration
+            </div>
+            <h2 className="font-['Cinzel'] text-2xl sm:text-3xl md:text-4xl font-bold text-on-surface uppercase tracking-wider mb-3">
+              How RSVP Speed Reading Works
+            </h2>
+            <p className="font-['EB_Garamond'] italic text-base sm:text-lg text-on-surface-variant max-w-xl mx-auto">
+              By presenting words sequentially in the exact same spot, your eyes do not need to move across lines—allowing you to read effortlessly at 450+ WPM.
+            </p>
           </div>
           
-          <div className="relative w-full max-w-4xl mx-auto h-[400px] bg-surface rounded-2xl shadow-xl flex flex-col overflow-hidden border border-outline-variant/10 group">
-            <div className="h-12 border-b border-outline-variant/10 flex items-center justify-between px-6 bg-surface-container/50">
-              <div className="flex gap-2">
-                <div className="w-3 h-3 rounded-full bg-error/50"></div>
-                <div className="w-3 h-3 rounded-full bg-secondary/50"></div>
-                <div className="w-3 h-3 rounded-full bg-primary/50"></div>
+          {/* Framed Display Reader */}
+          <div className="relative w-full max-w-3xl mx-auto h-[340px] sm:h-[380px] parchment-sheet rounded-2xl shadow-lg flex flex-col overflow-hidden antique-border">
+            {/* Bar */}
+            <div className="h-12 border-b border-outline-variant/50 flex items-center justify-between px-4 sm:px-6 bg-surface-container/50">
+              <div className="flex items-center gap-2 text-secondary font-['Cinzel'] text-xs font-bold">
+                <span>✦</span>
+                <span className="uppercase tracking-widest text-[10px] sm:text-[11px] text-on-surface">Live Speed Demo</span>
               </div>
-              <span className="text-xs text-on-surface-variant font-mono">450 WPM</span>
-              <div className="w-[48px]"></div>
+              <span className="font-['Cinzel'] text-xs font-bold text-primary tracking-widest">
+                450 Words Per Minute
+              </span>
+              <div className="text-secondary text-xs">✦</div>
             </div>
             
-            <div className="flex-1 flex items-center justify-center relative">
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="w-full h-[1px] bg-outline-variant/20"></div>
-                <div className="absolute h-full w-[1px] bg-outline-variant/20"></div>
-              </div>
+            {/* Display Center */}
+            <div className="flex-1 flex items-center justify-center relative px-4">
+              <div className="absolute top-2 left-3 text-secondary/60 font-['Cinzel'] text-sm">⌜❦</div>
+              <div className="absolute top-2 right-3 text-secondary/60 font-['Cinzel'] text-sm">❦⌝</div>
+              <div className="absolute bottom-2 left-3 text-secondary/60 font-['Cinzel'] text-sm">⌞❦</div>
+              <div className="absolute bottom-2 right-3 text-secondary/60 font-['Cinzel'] text-sm">❦⌟</div>
+
+              <div className="absolute inset-y-8 left-1/2 w-px bg-outline-variant/20 -translate-x-1/2 pointer-events-none"></div>
               
-              <div className="relative z-10 text-center font-['Be_Vietnam_Pro'] text-5xl md:text-[72px] font-medium text-on-surface">
-                <div className="absolute inset-0 bg-tertiary-fixed-dim/5 blur-[40px] rounded-full scale-150"></div>
-                <span className="opacity-50">{currentWord.text.substring(0, currentWord.focus)}</span>
+              <div 
+                className="relative z-10 text-center select-none font-normal"
+                style={{ 
+                  fontFamily: '"Helvetica Neue", Helvetica, -apple-system, BlinkMacSystemFont, Arial, sans-serif',
+                  fontSize: 'clamp(36px, 10vw, 72px)'
+                }}
+              >
+                <span className="opacity-70">{currentWord.text.substring(0, currentWord.focus)}</span>
                 <span className="text-primary font-bold">{currentWord.text.substring(currentWord.focus, currentWord.focus + 1)}</span>
-                <span className="opacity-50">{currentWord.text.substring(currentWord.focus + 1)}</span>
+                <span className="opacity-70">{currentWord.text.substring(currentWord.focus + 1)}</span>
               </div>
             </div>
             
-            <div className="h-20 border-t border-outline-variant/10 bg-surface-container/50 flex items-center justify-center gap-8 px-6">
-              <button onClick={() => setIsPlaying(!isPlaying)} className="w-12 h-12 rounded-full bg-on-surface text-surface flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
-                {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6 ml-1" />}
+            {/* Demo Controls */}
+            <div className="h-16 border-t border-outline-variant/50 bg-surface-container/50 flex items-center justify-between px-4 sm:px-6">
+              <span className="font-['Cinzel'] text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">
+                Word {demoWordIndex + 1} of {demoWords.length}
+              </span>
+
+              <button 
+                onClick={() => setIsPlaying(!isPlaying)} 
+                className="w-11 h-11 rounded-full bg-primary text-on-primary border border-secondary/60 flex items-center justify-center shadow hover:scale-105 active:scale-95 transition-transform"
+                title={isPlaying ? "Pause Demo" : "Play Demo"}
+                aria-label="Toggle demonstration play"
+              >
+                {isPlaying ? <Pause className="w-5 h-5 text-on-primary" /> : <Play className="w-5 h-5 text-on-primary ml-0.5" />}
+              </button>
+
+              <button
+                onClick={() => setView('library')}
+                className="font-['Cinzel'] text-xs font-bold text-primary uppercase tracking-wider hover:underline"
+              >
+                Open Library →
               </button>
             </div>
             
-            <div className="absolute bottom-0 left-0 h-1 bg-outline-variant/20 w-full">
-              <div className="h-full bg-primary" style={{ width: `${(demoWordIndex / demoWords.length) * 100}%` }}></div>
+            {/* Progress rule */}
+            <div className="h-1 bg-outline-variant/30 w-full">
+              <div 
+                className="h-full bg-gradient-to-r from-secondary to-primary transition-all duration-150" 
+                style={{ width: `${((demoWordIndex + 1) / demoWords.length) * 100}%` }}
+              ></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section className="py-32 px-4 lg:px-6 bg-surface">
-        <div className="max-w-[1200px] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-surface-container rounded-2xl p-8 flex flex-col h-full shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-[40px] -translate-y-1/2 translate-x-1/2 group-hover:bg-primary/10 transition-colors"></div>
-              <div className="w-12 h-12 rounded-xl bg-surface flex items-center justify-center mb-8 shadow-sm border border-outline-variant/10">
-                <EyeOff className="w-6 h-6 text-primary" />
+      {/* Feature Highlights */}
+      <section className="py-20 sm:py-28 px-4 sm:px-6 lg:px-12 bg-surface">
+        <div className="max-w-[1140px] mx-auto">
+          <div className="text-center mb-14 md:mb-18 ornament-line">
+            <h3 className="font-['Cinzel'] text-xl sm:text-2xl font-bold uppercase tracking-wider text-on-surface">
+              Core Reading Features
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            <div className="bg-surface-container/60 rounded-xl p-7 border border-outline-variant/60 flex flex-col h-full book-card-emboss relative">
+              <div className="w-11 h-11 rounded-lg border border-secondary/40 bg-surface flex items-center justify-center mb-5 text-primary shadow-xs">
+                <EyeOff className="w-5 h-5 text-primary" />
               </div>
-              <h4 className="text-2xl font-semibold text-on-surface mb-3">Distraction-Free</h4>
-              <p className="text-base text-on-surface-variant mt-auto">Invisible UI. Total focus. Everything strips away leaving only the current word, ensuring your cognitive load is dedicated entirely to comprehension.</p>
+              <span className="font-['Cinzel'] text-[10px] text-secondary tracking-widest uppercase font-bold mb-1">
+                Feature 1
+              </span>
+              <h4 className="font-['Cinzel'] text-xl font-bold text-on-surface mb-2">
+                Distraction-Free Focus
+              </h4>
+              <p className="font-['EB_Garamond'] text-base text-on-surface-variant leading-relaxed mt-2">
+                Unnecessary toolbars and clutter disappear during reading. Only the highlighted word remains, keeping your concentration locked.
+              </p>
             </div>
             
-            <div className="bg-surface-container rounded-2xl p-8 flex flex-col h-full shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-tertiary-fixed-dim/5 rounded-full blur-[40px] -translate-y-1/2 translate-x-1/2 group-hover:bg-tertiary-fixed-dim/10 transition-colors"></div>
-              <div className="w-12 h-12 rounded-xl bg-surface flex items-center justify-center mb-8 shadow-sm border border-outline-variant/10">
-                <SlidersHorizontal className="w-6 h-6 text-tertiary-fixed-dim" />
+            <div className="bg-surface-container/60 rounded-xl p-7 border border-outline-variant/60 flex flex-col h-full book-card-emboss relative">
+              <div className="w-11 h-11 rounded-lg border border-secondary/40 bg-surface flex items-center justify-center mb-5 text-secondary shadow-xs">
+                <SlidersHorizontal className="w-5 h-5 text-secondary" />
               </div>
-              <h4 className="text-2xl font-semibold text-on-surface mb-3">Customizable Speeds</h4>
-              <p className="text-base text-on-surface-variant mt-auto">Start at a comfortable 250 WPM and smoothly scale up to 1000+ WPM. The intelligent engine automatically adjusts pacing for punctuation and long words.</p>
+              <span className="font-['Cinzel'] text-[10px] text-secondary tracking-widest uppercase font-bold mb-1">
+                Feature 2
+              </span>
+              <h4 className="font-['Cinzel'] text-xl font-bold text-on-surface mb-2">
+                Customizable Speed
+              </h4>
+              <p className="font-['EB_Garamond'] text-base text-on-surface-variant leading-relaxed mt-2">
+                Dial in your reading speed from a comfortable 150 WPM up to 950 WPM with instant slider adjustments and keyboard controls.
+              </p>
             </div>
             
-            <div className="bg-surface-container rounded-2xl p-8 flex flex-col h-full shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full blur-[40px] -translate-y-1/2 translate-x-1/2 group-hover:bg-secondary/10 transition-colors"></div>
-              <div className="w-12 h-12 rounded-xl bg-surface flex items-center justify-center mb-8 shadow-sm border border-outline-variant/10">
-                <TrendingUp className="w-6 h-6 text-secondary" />
+            <div className="bg-surface-container/60 rounded-xl p-7 border border-outline-variant/60 flex flex-col h-full book-card-emboss relative">
+              <div className="w-11 h-11 rounded-lg border border-secondary/40 bg-surface flex items-center justify-center mb-5 text-primary shadow-xs">
+                <TrendingUp className="w-5 h-5 text-primary" />
               </div>
-              <h4 className="text-2xl font-semibold text-on-surface mb-3">Progress Tracking</h4>
-              <p className="text-base text-on-surface-variant mt-auto">Monitor your reading velocity, comprehension scores, and library completion rates with minimalist, high-contrast data visualizations.</p>
+              <span className="font-['Cinzel'] text-[10px] text-secondary tracking-widest uppercase font-bold mb-1">
+                Feature 3
+              </span>
+              <h4 className="font-['Cinzel'] text-xl font-bold text-on-surface mb-2">
+                Progress Tracking
+              </h4>
+              <p className="font-['EB_Garamond'] text-base text-on-surface-variant leading-relaxed mt-2">
+                Every reading session automatically tracks your total reading time, average speed, and clean rounded completion percentages.
+              </p>
             </div>
           </div>
         </div>
       </section>
       
-      {/* Final CTA */}
-      <section className="py-32 px-4 lg:px-6 bg-surface-container-lowest relative overflow-hidden">
-        <div className="relative z-10 max-w-3xl mx-auto text-center flex flex-col items-center">
-          <h2 className="text-3xl md:text-4xl font-semibold text-on-surface mb-6">Ready to accelerate your mind?</h2>
-          <p className="text-lg text-on-surface-variant mb-12">Join thousands of high-output professionals who have revolutionized how they consume information.</p>
-          <button onClick={() => setView('library')} className="px-10 py-5 bg-on-surface text-surface font-semibold text-xl rounded-xl shadow-xl hover:bg-surface-tint hover:scale-105 transition-all duration-300">
-            Create Free Account
+      {/* Final Call to Action */}
+      <section className="py-20 px-4 sm:px-6 lg:px-12 bg-surface-container text-center border-t border-outline-variant/60">
+        <div className="max-w-2xl mx-auto">
+          <div className="text-secondary text-base mb-3">❦ ❖ ❧</div>
+          <h2 className="font-['Cinzel_Decorative'] text-3xl sm:text-4xl font-bold text-on-surface mb-4">
+            Start Reading Now
+          </h2>
+          <p className="font-['EB_Garamond'] italic text-lg text-on-surface-variant mb-8 leading-relaxed">
+            Select a classic book from your library or paste any article or document to begin.
+          </p>
+          <button 
+            onClick={() => setView('library')} 
+            className="px-8 py-3.5 bg-primary text-on-primary font-['Cinzel'] font-bold text-xs uppercase tracking-widest rounded-lg border border-secondary/50 shadow-md hover:opacity-90 active:scale-95 transition-all min-h-[48px]"
+          >
+            Open Your Library
           </button>
-          <p className="text-xs font-medium text-on-surface-variant mt-6 opacity-60">No credit card required. 14-day premium trial included.</p>
         </div>
       </section>
     </div>

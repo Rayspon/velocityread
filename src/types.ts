@@ -33,6 +33,15 @@ export interface UserAccount {
   stats?: UserStats;
 }
 
+export interface ReaderCustomization {
+  fontFamily: string;
+  fontSize: number;
+  textColor: string;
+  focalColor: string;
+  bgColor: string;
+  showVignette?: boolean;
+}
+
 export interface AppState {
   view: ViewState;
   library: TextItem[];
